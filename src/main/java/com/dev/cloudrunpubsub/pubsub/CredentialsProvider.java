@@ -57,18 +57,6 @@ import java.util.List;
         return response.getBody().getAccess_token();
     }
 
-    private String exchangeWifForGoogleToken(String wifToken) {
-        MultiValueMap<String, String> request = new LinkedMultiValueMap<>();
-        request.add("audience", String.format(sourceURIToken, gcpProjectId));
-        request.add("grantType", "urn:ietf:params:oauth:grant-type:token-exchange");
-        request.add("requestedTokenType", "urn:ietf:params:oauth:token-type:access_token");
-        request.add("scope", "https://www.googleapis.com/auth/cloud-platform");
-        request.add("subjectTokenType", "urn:ietf:params:oauth:token-type:jwt");
-        request.add("subjectToken", wifToken);
-        ResponseEntity<TokenResponse> response = restTemplate.postForEntity("https://sts.googleapis.com/v1/token", request, TokenResponse.class);
-        return response.getBody().getAccess_token();
-    }
-
     private String exchangeGoogleTokenForServiceAccountToken(String googleToken) {
         MultiValueMap<String, List<String>> request = new LinkedMultiValueMap<>();
         request.add("scope", Arrays.asList("https://www.googleapis.com/auth/cloud-platform"));
